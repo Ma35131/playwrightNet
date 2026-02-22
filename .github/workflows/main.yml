@@ -1,0 +1,31 @@
+name: .NET Build and Test
+
+on:
+  workflow_dispatch:   # Manual trigger
+  # schedule:
+  #   - cron: '30 16 * * *'   # Optional cron job
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'   # Change based on your project
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build project
+        run: dotnet build --no-restore --configuration Release
+
+      - name: Install Playwright Browsers
+        run: pwsh bin/Release/net8.0/playwright.ps1 install --with-deps
+
+      - name: Run Tests
+        run: dotnet test --no-build --verbosity normal
