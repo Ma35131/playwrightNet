@@ -1,0 +1,4 @@
+bin/
+obj/
+PlayWrightTests.csproj
+UnitTest1.cs
